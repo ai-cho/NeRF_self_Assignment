@@ -19,9 +19,6 @@
   <img src="./media/nerf_blender/lego.gif" width="400" />
 </div>
 
-#### Due: October 9, 2023 (Monday) 23:59 KST
-#### Where to Submit: Gradescope
-
 ## Abstract
 
 The introduction of [Neural Radiance Fields (NeRF)](https://arxiv.org/abs/2003.08934) was a massive milestone in image-based, neural rendering literature.
