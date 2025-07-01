@@ -28,72 +28,20 @@ As of today, the follow-up research aiming to scale and extend the idea to vario
 In this assignment, we will take a technical deep dive into NeRF to understand this ground-breaking approach which will help us navigate a broader landscape of the field.
 We strongly recommend you check out the paper, together with [our brief summary](https://geometry-kaist.notion.site/Tutorial-2-NeRF-Neural-Radiance-Field-ef0c1f3446434162a540e6afc7aeccc8?pvs=4), before, or while working on this assignment.
 
-> :warning: **This assignment involves training a neural network that takes approximately 2 hours. Start as early as possible.**
-
-<details>
-<summary><b>Table of Content</b></summary>
-  
-- [Abstract](#abstract)
-- [Setup](#setup)
-- [Code Structure](#code-structure)
-- [Tasks](#tasks)
-  - [Task 0. Download Data](#task-0-download-data)
-  - [Task 1. Implementing MLP](#task-1-implementing-mlp)
-  - [Task 2. Implementing Ray Sampling](#task-2-implementing-ray-sampling)
-  - [Task 3. Implementing Volume Rendering Equation](#task-3-implementing-volume-rendering-equation)
-  - [Task 4. Qualitative \& Quantitative Evaluation](#task-4-qualitative--quantitative-evaluation)
-  - [(Optional) Task 5. Train NeRF with Your Own Data](#optional-task-5-train-nerf-with-your-own-data)
-- [What to Submit](#what-to-submit)
-- [Grading](#grading)
-- [Further Readings](#further-readings)
-</details>
-
-## Setup
-
-We recommend creating a virtual environment using `conda`.
-To create a `conda` environment, issue the following command:
-```
-conda create --name nerf-tutorial python=3.8
-```
-This should create a basic environment with Python 3.8 installed.
-Next, activate the environment and install the dependencies using `pip`:
-```
-conda activate nerf-tutorial
-pip install -r requirements.txt
-```
-The remaining dependencies are the ones related to PyTorch and they can be installed with the command:
-```
-pip install torch==1.10.1+cu113 torchvision==0.11.2+cu113 torchaudio==0.10.1 -f https://download.pytorch.org/whl/cu113/torch_stable.html
-pip install torchmetrics[image]
-pip install tensorboard
-```
-
-Register the project root directory (i.e., `torch-NeRF`) as an environment variable to help the Python interpreter search our files.
-```
-export PYTHONPATH=.
-```
-
-By default, the configuration is set for the `lego` scene included in the `Blender` dataset. Refer to the config files under `config` for more details. Executing the following initiates training:
-```
-python torch_nerf/runners/train.py
-```
-All by-products produced during each run, including TensorBoard logs, will be saved under an experiment directory under `outputs`. This is automatically done by [Hydra](https://hydra.cc), the library we use for managing our config files. Refer to [the official documentation](https://hydra.cc/docs/intro/) for examples and APIs.
-
-**We highly encourage you to try out multiple seeds as the performance of neural networks is often sensitive to the initialization.**
-The function `init_torch` that sets the random seed for PyTorch is located at `torch_nerf/runners/utils.py`
-
-> :bulb: **Each run takes approximately 2 hours on a single NVIDIA RTX 3090 GPU and consumes around 10 GB of VRAM.**
-
-After training NeRF, it can be rendered using the script `render.py.`
-To do so, provide the experiment directory created when running the training script. For instance,
-```
-python torch_nerf/runners/render.py +log_dir=outputs/2023-06-27/00-10-15 +render_test_views=False
-```
-The Boolean flag `render_test_views` determines whether to render the trained scene from the viewpoints held out for testing. We will come back to this when discussing quantitative evaluation.
-
 ## Code Structure
 This codebase is organized as the following directory tree. We only list the core components for brevity:
 ```
+
+media
+│
+├── ckpt             <- Directory containing nerf checkpoint
+│
+└── render
+    ├── test_views             <- Directory containing test view rendering
+    └── video                  <- Directory containing train view rendering
+
+
+
 torch_nerf
 │
 ├── configs             <- Directory containing config files
