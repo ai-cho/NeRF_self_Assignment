@@ -34,11 +34,11 @@ This codebase is organized as the following directory tree. We only list the cor
 
 media
 │
-├── ckpt             <- Directory containing nerf checkpoint
+├── ckpt               <- Directory containing nerf checkpoint
 │
 └── render
-    ├── test_views             <- Directory containing test view rendering
-    └── video                  <- Directory containing train view rendering
+    ├── test_views     <- Directory containing test view rendering
+    └── video          <- Directory containing train view rendering
 
 
 
