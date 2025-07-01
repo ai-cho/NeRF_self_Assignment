@@ -9,7 +9,7 @@ validation:
   validate_every: 10
   num_batch: 5
 log:
-  epoch_btw_ckpt: 50
+  epoch_btw_ckpt: 2
   epoch_btw_vis: 10
 ckpt:
   path: null

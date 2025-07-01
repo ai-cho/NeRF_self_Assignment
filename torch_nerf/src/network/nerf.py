@@ -35,7 +35,52 @@ class NeRF(nn.Module):
         super().__init__()
 
         # TODO
-        raise NotImplementedError("Task 1")
+
+        self.pos_dim = pos_dim
+        self.view_dir_dim = view_dir_dim
+        self.feat_dim = feat_dim
+
+        self.mlp_1 = nn.Sequential(
+            nn.Linear(pos_dim, feat_dim),
+            nn.ReLU(),
+            nn.Linear(feat_dim, feat_dim),
+            nn.ReLU(),
+            nn.Linear(feat_dim, feat_dim),
+            nn.ReLU(),
+            nn.Linear(feat_dim, feat_dim),
+            nn.ReLU()
+        )
+
+        # before orange arrow
+        self.mlp_2 = nn.Sequential(
+            nn.Linear(feat_dim + pos_dim, feat_dim),
+            nn.ReLU(),
+            nn.Linear(feat_dim, feat_dim),
+            nn.ReLU(),
+            nn.Linear(feat_dim, feat_dim),
+            nn.ReLU()
+        )
+
+        self.mlp_3 = nn.Sequential(
+            nn.Linear(feat_dim, feat_dim)
+        )
+
+        self.mlp_4 = nn.Sequential(
+            nn.Linear(feat_dim + view_dir_dim, 128),
+            nn.ReLU()
+        )
+    
+        self.sigma_layer = nn.Sequential(
+            nn.Linear(feat_dim, 1),
+            nn.ReLU()
+        )
+
+        self.color_layer = nn.Sequential(
+            nn.Linear(128, 3),
+            nn.Sigmoid()
+        )
+
+        # raise NotImplementedError("Task 1")
 
     @jaxtyped
     @typechecked
@@ -60,4 +105,13 @@ class NeRF(nn.Module):
         """
 
         # TODO
-        raise NotImplementedError("Task 1")
+
+        z = torch.cat([self.mlp_1(pos), pos], dim=-1)
+        z = self.mlp_2(z)
+        sigma = self.sigma_layer(z)
+
+        z = torch.cat([self.mlp_3(z), view_dir], dim=-1)
+        color = self.color_layer(self.mlp_4(z))
+        
+        return sigma, color
+        # raise NotImplementedError("Task 1")

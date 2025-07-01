@@ -7,7 +7,7 @@ from typing import Dict, Optional, Tuple
 from omegaconf import DictConfig
 import torch
 import torch.utils.data as data
-from torch.utils.tensorboard import SummaryWriter
+# from torch.utils.tensorboard import SummaryWriter
 import torch_nerf.src.network as network
 import torch_nerf.src.scene as scene
 import torch_nerf.src.renderer.integrators.quadrature_integrator as integrators

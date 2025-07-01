@@ -366,29 +366,23 @@ def main(cfg: DictConfig) -> None:
 
     # initialize PyTorch
     init_torch(cfg)
-
     # initialize CUDA device
     init_cuda(cfg)
-
     # initialize renderer, data
     renderer = init_renderer(cfg)
-
     # initialize dataset and loader
     train_dataset, train_loader, val_dataset, val_loader = init_dataset_and_loader(cfg)
 
     # initialize scene and network parameters
     default_scene, fine_scene = init_scene(cfg)
-
     # initialize optimizer and learning rate scheduler
     optimizer, scheduler = init_optimizer_and_scheduler(
         cfg,
         default_scene,
         fine_scene=fine_scene,
     )
-
     # initialize objective function
     loss_func = init_loss_func(cfg)
-
     # load if checkpoint exists
     start_epoch = load_ckpt(
         log_dir / "ckpt",
@@ -397,7 +391,6 @@ def main(cfg: DictConfig) -> None:
         optimizer,
         scheduler,
     )
-
     for epoch in tqdm(range(start_epoch, cfg.train_params.optim.num_iter // len(train_dataset))):
 
         # train
